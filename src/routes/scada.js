@@ -10,7 +10,7 @@ router.get("/getData", authenticateToken, async (req, res) => {
       return res.status(400).json({ message: "Channels required" });
 
     const data = await scadaClient.getCurData(channels);
-    res.json(data);
+    res.status(200).json(data);
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ message: err.message });
@@ -33,7 +33,7 @@ router.post(
 
       const result = await scadaClient.sendCommand(channelNum, cmdVal);
       console.log("successfully send command");
-      res.json(result);
+      res.status(200).json(result);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

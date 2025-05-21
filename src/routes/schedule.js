@@ -20,7 +20,7 @@ router.post(
 
       await stopAndRunAllSchedule();
       console.log("Schedule added successfully");
-      res.json({ ok: true, msg: "Schedule added successfully" });
+      res.status(200).json({ ok: true, msg: "Schedule added successfully" });
     } catch (err) {
       console.error("Error adding schedule ", err.message);
       res
@@ -34,7 +34,7 @@ router.post(
 router.get("/", authenticateToken, authorizeRole("admin"), async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM schedules");
-    res.json({ ok: true, schedules: rows });
+    res.status(200).json({ ok: true, schedules: rows });
   } catch (err) {
     console.error("error fetching schedules ", err.message);
     res
@@ -56,7 +56,7 @@ router.delete(
       await stopAndRunAllSchedule();
 
       console.log("shedu");
-      res.json({ ok: true, msg: "Schedule deleted successfully" });
+      res.status(200).json({ ok: true, msg: "Schedule deleted successfully" });
     } catch (err) {
       console.error("error deleting shedule ", err.message);
       res.status(500).json({

@@ -33,6 +33,7 @@ class ScadaClient {
   async logout() {
     try {
       await axios.post(`${SCADA_BASE_URL}/Api/Auth/Logout`);
+      this.sessionCookie = null;
       return true;
     } catch (err) {
       console.error("SCADA logout error:", err.message);

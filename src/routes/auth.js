@@ -5,6 +5,17 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const scadaClient = require("../utils/scadaClient");
 
+router.get("/user", async (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) return res.status(401).json({ message: "Token missing" });
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    res.status(200).json({ user });
+  });
+});
+
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -44,13 +55,14 @@ router.post("/login", async (req, res) => {
       { expiresIn: "30m" }
     );
 
+    console.log("berhasil login");
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
       // sameSite:
       maxAge: 30 * 60 * 1000, // 30 minutes in miliseconds
     });
-    res.json({ token, username: user.username, role: user.role });
+    res.status(200).json({ token, username: user.username, role: user.role });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -65,6 +77,8 @@ router.post("/logout", async (req, res) => {
         .status(500)
         .json({ message: "Failed to logout to Rapid SCADA" });
     }
+    res.clearCookie("token");
+    console.log("berhasil logout");
     res.status(200).json({ message: "ok" });
   } catch (err) {
     console.error(error);
