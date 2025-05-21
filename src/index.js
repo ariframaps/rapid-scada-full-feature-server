@@ -1,18 +1,36 @@
-const express = require("express");
-const axios = require("axios");
-const cors = require("cors");
 require("dotenv").config();
-
+const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(express.json()); // biar bisa baca JSON dari body
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("SCADA Backend Running!");
-});
+// routes
+const authRoutes = require("./routes/auth");
+const scadaRoutes = require("./routes/scada");
+const scheduleRoutes = require("./routes/schedule");
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+app.use("/api/auth", authRoutes);
+app.use("/api/scada", scadaRoutes);
+app.use("/api/schedule", scheduleRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// const cron = require('node-cron');
+
+// async function startSchedules() {
+//   const schedules = await db.query("SELECT * FROM schedules");
+
+//   schedules.forEach(schedule => {
+//     const [hour, minute] = schedule.scheduled_time.split(':');
+//     const cronTime = `${+minute} ${+hour} * * *`;
+
+//     cron.schedule(cronTime, () => {
+//       const percentage = schedule.action === 'open' ? 100 : 0;
+//       sendCommand(schedule.gate_id, percentage);
+//     });
+//   });
+// }
+
+// // Call this when your app starts
+// startSchedules();
