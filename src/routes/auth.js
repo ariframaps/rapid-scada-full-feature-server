@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
       { expiresIn: "30m" }
     );
 
-    console.log("berhasil login");
+    // console.log("berhasil login");
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
@@ -64,19 +64,19 @@ router.post("/login", async (req, res) => {
     });
     res.status(200).json({ token, username: user.username, role: user.role });
   } catch (error) {
-    console.error(error);
+    console.error("login gagal", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
 router.post("/logout", async (req, res) => {
   try {
-    const logoutScadaSuccess = await scadaClient.logout();
-    if (!logoutScadaSuccess) {
-      return res
-        .status(500)
-        .json({ message: "Failed to logout to Rapid SCADA" });
-    }
+    // const logoutScadaSuccess = await scadaClient.logout();
+    // if (!logoutScadaSuccess) {
+    //   return res
+    //     .status(500)
+    //     .json({ message: "Failed to logout to Rapid SCADA" });
+    // }
     res.clearCookie("token");
     console.log("berhasil logout");
     res.status(200).json({ message: "ok" });

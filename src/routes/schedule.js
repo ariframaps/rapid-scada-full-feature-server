@@ -13,14 +13,20 @@ router.post(
   async (req, res) => {
     const { gate_id, value, scheduled_time, channelNum } = req.body;
     try {
-      await db.query(
+      const dbRes = await db.query(
         "INSERT INTO schedules (gate_id, value, scheduled_time, cnl) VALUES (?, ?, ?, ?)",
         [gate_id, value, scheduled_time, channelNum]
       );
 
       await stopAndRunAllSchedule();
       console.log("Schedule added successfully");
-      res.status(200).json({ ok: true, msg: "Schedule added successfully" });
+      res
+        .status(200)
+        .json({
+          ok: true,
+          newId: dbRes[0].insertId,
+          msg: "Schedule added successfully",
+        });
     } catch (err) {
       console.error("Error adding schedule ", err.message);
       res
@@ -55,7 +61,7 @@ router.delete(
 
       await stopAndRunAllSchedule();
 
-      console.log("shedu");
+      console.log("shedule deleted successfully");
       res.status(200).json({ ok: true, msg: "Schedule deleted successfully" });
     } catch (err) {
       console.error("error deleting shedule ", err.message);
