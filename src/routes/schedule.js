@@ -11,22 +11,21 @@ router.post(
   authenticateToken,
   authorizeRole("admin"),
   async (req, res) => {
-    const { gate_id, value, scheduled_time, channelNum } = req.body;
+    const { gate_id, value, scheduled_time, channel_number } = req.body;
+    console.log({ gate_id, value, scheduled_time, channel_number });
     try {
       const dbRes = await db.query(
-        "INSERT INTO schedules (gate_id, value, scheduled_time, cnl) VALUES (?, ?, ?, ?)",
-        [gate_id, value, scheduled_time, channelNum]
+        "INSERT INTO schedules (gate_id, value, cnl, scheduled_time) VALUES (?, ?, ?, ?)",
+        [gate_id, value, channel_number, scheduled_time]
       );
 
       await stopAndRunAllSchedule();
       console.log("Schedule added successfully");
-      res
-        .status(200)
-        .json({
-          ok: true,
-          newId: dbRes[0].insertId,
-          msg: "Schedule added successfully",
-        });
+      res.status(200).json({
+        ok: true,
+        newId: dbRes[0].insertId,
+        msg: "Schedule added successfully",
+      });
     } catch (err) {
       console.error("Error adding schedule ", err.message);
       res
