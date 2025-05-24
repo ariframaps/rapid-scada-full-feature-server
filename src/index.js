@@ -1,11 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const pool = require("./config/db"); // import MySQL pool
 
 const app = express();
 
 app.use(express.json());
-app.use(cookieParser()); // enable cookies
+app.use(cookieParser());
 
 // routes
 const authRoutes = require("./routes/auth");
@@ -17,7 +18,23 @@ app.use("/api/scada", scadaRoutes);
 app.use("/api/schedule", scheduleRoutes);
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// start server only if DB is connected
+async function startServer() {
+  try {
+    const conn = await pool.getConnection();
+    console.log("DB connected!");
+    conn.release(); // release the connection
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Failed to connect to DB:", err);
+  }
+}
+
+startServer();
 
 // const cron = require('node-cron');
 
