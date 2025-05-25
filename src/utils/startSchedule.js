@@ -1,4 +1,5 @@
 const cron = require("node-cron");
+const db = require("../config/db");
 
 async function startSchedules() {
   const schedules = await db.query("SELECT * FROM schedules");
