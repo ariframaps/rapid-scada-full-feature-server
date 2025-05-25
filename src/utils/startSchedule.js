@@ -5,15 +5,18 @@ async function startSchedules() {
   const schedules = await db.query("SELECT * FROM schedules");
   console.log("starting all the schedules");
 
-  schedules.forEach((schedule) => {
-    const [hour, minute] = schedule.scheduled_time.split(":");
-    const cronTime = `${+minute} ${+hour} * * *`;
+  console.log(schedules);
+  if (schedules && schedules.length > 0) {
+    schedules.forEach((schedule) => {
+      const [hour, minute] = schedule.scheduled_time.split(":");
+      const cronTime = `${+minute} ${+hour} * * *`;
 
-    cron.schedule(cronTime, () => {
-      const percentage = schedule.action === "open" ? 100 : 0;
-      sendCommand(schedule.gate_id, percentage);
+      cron.schedule(cronTime, () => {
+        const percentage = schedule.action === "open" ? 100 : 0;
+        sendCommand(schedule.gate_id, percentage);
+      });
     });
-  });
+  }
 }
 
 // Call this when your app starts
