@@ -8,6 +8,7 @@ async function startSchedules() {
   console.log(schedules);
   if (schedules && schedules.length > 0) {
     schedules.forEach((schedule) => {
+      console.log(schedule);
       const [hour, minute] = schedule.scheduled_time.split(":");
       const cronTime = `${+minute} ${+hour} * * *`;
 
@@ -16,6 +17,8 @@ async function startSchedules() {
         sendCommand(schedule.gate_id, percentage);
       });
     });
+  } else {
+    console.log("there is no schedule");
   }
 }
 
