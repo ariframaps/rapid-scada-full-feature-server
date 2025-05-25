@@ -18,7 +18,7 @@ router.get("/user", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
-
+  console.log({ username, password });
   try {
     // cek apakah user ada apa nggak
     const [rows] = await pool.execute(
