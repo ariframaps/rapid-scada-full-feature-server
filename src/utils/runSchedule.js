@@ -4,6 +4,7 @@ const scadaClient = require("./scadaClient");
 let cronJobs = [];
 
 async function stopAndRunAllSchedule() {
+  console.log("refetch allschedule");
   try {
     // stop old jobs
     cronJobs.forEach((job) => job.stop());

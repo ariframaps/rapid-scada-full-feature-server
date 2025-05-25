@@ -5,6 +5,7 @@ const pool = require("./config/db"); // import MySQL pool
 const authRoutes = require("./routes/auth");
 const scadaRoutes = require("./routes/scada");
 const scheduleRoutes = require("./routes/schedule");
+const startSchedules = require("./utils/startSchedule");
 
 const app = express();
 // const router = express.Router();
@@ -38,6 +39,7 @@ async function startServer() {
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+      startSchedules();
     });
   } catch (err) {
     console.error("Failed to connect to DB:", err);
@@ -45,22 +47,3 @@ async function startServer() {
 }
 
 startServer();
-
-// const cron = require('node-cron');
-
-// async function startSchedules() {
-//   const schedules = await db.query("SELECT * FROM schedules");
-
-//   schedules.forEach(schedule => {
-//     const [hour, minute] = schedule.scheduled_time.split(':');
-//     const cronTime = `${+minute} ${+hour} * * *`;
-
-//     cron.schedule(cronTime, () => {
-//       const percentage = schedule.action === 'open' ? 100 : 0;
-//       sendCommand(schedule.gate_id, percentage);
-//     });
-//   });
-// }
-
-// // Call this when your app starts
-// startSchedules();
