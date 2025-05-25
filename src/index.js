@@ -5,7 +5,7 @@ const pool = require("./config/db"); // import MySQL pool
 const authRoutes = require("./routes/auth");
 const scadaRoutes = require("./routes/scada");
 const scheduleRoutes = require("./routes/schedule");
-const startSchedules = require("./utils/startSchedule");
+const { startSchedules } = require("./utils/startSchedule");
 
 const app = express();
 // const router = express.Router();
