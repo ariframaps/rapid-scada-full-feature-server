@@ -86,11 +86,4 @@ router.post("/logout", async (req, res) => {
   }
 });
 
-router.use((req, res) => {
-  res.status(404).json({
-    message: "No route matched",
-    method: req.method,
-    path: req.originalUrl,
-  });
-});
 module.exports = router;
