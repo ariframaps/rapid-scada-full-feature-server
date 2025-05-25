@@ -69,6 +69,14 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.all("*", (req, res) => {
+  res.status(404).json({
+    message: "No route matched",
+    method: req.method,
+    path: req.originalUrl,
+  });
+});
+
 router.post("/logout", async (req, res) => {
   try {
     // const logoutScadaSuccess = await scadaClient.logout();

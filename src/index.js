@@ -2,6 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const pool = require("./config/db"); // import MySQL pool
+const authRoutes = require("./routes/auth");
+const scadaRoutes = require("./routes/scada");
+const scheduleRoutes = require("./routes/schedule");
 
 const app = express();
 // const router = express.Router();
@@ -14,9 +17,6 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
   res.send("Hello, world! Server is working 🎉");
 });
-const authRoutes = require("./routes/auth");
-const scadaRoutes = require("./routes/scada");
-const scheduleRoutes = require("./routes/schedule");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/scada", scadaRoutes);
