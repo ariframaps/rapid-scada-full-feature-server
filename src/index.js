@@ -9,14 +9,14 @@ const scheduleRoutes = require("./routes/schedule");
 const app = express();
 // const router = express.Router();
 
-app.set("trust proxy", 1);
-app.use(express.json());
-app.use(cookieParser());
-
 app.use((req, res, next) => {
   console.log(`Received ${req.method} request for ${req.url}`);
   next();
 });
+
+app.set("trust proxy", 1);
+app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.get("/", (req, res) => {
