@@ -4,17 +4,16 @@ const cookieParser = require("cookie-parser");
 const pool = require("./config/db"); // import MySQL pool
 
 const app = express();
-const router = express.Router();
+// const router = express.Router();
 
 app.set("trust proxy", 1);
 app.use(express.json());
 app.use(cookieParser());
 
 // routes
-router.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Hello, world! Server is working 🎉");
 });
-
 const authRoutes = require("./routes/auth");
 const scadaRoutes = require("./routes/scada");
 const scheduleRoutes = require("./routes/schedule");
